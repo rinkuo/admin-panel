@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="flex-1 p-8 overflow-y-auto">
+    <header class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">Order Details</h2>
+        <button class="md:hidden bg-indigo-600 text-white p-2 rounded" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div class="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Order Information</h3>
+                <p><strong>Order ID:</strong> #{{ order.id }}</p>
+                <p><strong>Date:</strong> {{ order.created_at|date:"Y-m-d" }}</p>
+                <p><strong>Status:</strong>
+                    <span class="bg-green-200 text-green-800 py-1 px-2 rounded-full text-sm">
+                        {{ order.get_status_display }}
+                    </span>
+                </p>
+                <p><strong>Total:</strong> ${{ order.total_amount }}</p>
+            </div>
+            <div>
+                <h3 class="text-xl font-semibold mb-4">Customer Information</h3>
+                <p><strong>Name:</strong> {{ order.customer_name }}</p>
+                <p><strong>Phone:</strong> {{ order.customer_phone }}</p>
+                <p><strong>Email:</strong> {{ order.customer_email }}</p>
+                <p><strong>Address:</strong> {{ order.customer_address }}</p>
+            </div>
+        </div>
+
+        <h3 class="text-xl font-semibold mt-8 mb-4">Order Items</h3>
+        <table class="w-full">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="p-2 text-left">Product</th>
+                    <th class="p-2 text-left">Quantity</th>
+                    <th class="p-2 text-left">Price</th>
+                    <th class="p-2 text-left">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.items.all %}
+                <tr class="border-b">
+                    <td class="p-2">{{ item.product.name }}</td>
+                    <td class="p-2">{{ item.quantity }}</td>
+                    <td class="p-2">${{ item.price }}</td>
+                    <td class="p-2">${{ item.total_price }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="p-2 text-center text-gray-500">No items found in this order.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr class="font-bold">
+                    <td colspan="3" class="p-2 text-right">Total:</td>
+                    <td class="p-2">${{ order.total_amount }}</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div class="mt-8 flex justify-end space-x-4">
+            <a href="{% url 'orders:order_update' order.pk %}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors duration-200">
+                <i class="fas fa-edit mr-2"></i>Edit Order
+            </a>
+            <a href="{% url 'orders:order_list' %}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors duration-200">
+                <i class="fas fa-arrow-left mr-2"></i>Back to List
+            </a>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

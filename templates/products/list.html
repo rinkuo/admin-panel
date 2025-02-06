@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - E-commerce Admin Panel{% endblock %}
+
+{% block content %}
+<header class="flex justify-between items-center mb-8">
+    <h2 class="text-3xl font-bold text-gray-800">Products</h2>
+</header>
+
+<div class="bg-white p-6 rounded-lg shadow-md mb-8 animate-fadeIn">
+    <form method="GET" class="flex flex-wrap gap-4 items-center justify-between">
+        <div class="flex flex-wrap gap-4 items-center">
+            <input type="text" name="q" placeholder="Search products" value="{{ search_query }}" class="border p-2 rounded">
+
+            <select name="category" class="border p-2 rounded">
+                <option value="all">All Categories</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if category.id|stringformat:"s" == selected_category %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition-colors duration-200">
+                <i class="fas fa-search mr-2"></i>Search
+            </button>
+        </div>
+
+        <div class="flex gap-4 items-center">
+            <select name="sort" class="border p-2 rounded" onchange="this.form.submit()">
+                <option value="name" {% if selected_sort == 'name' %}selected{% endif %}>Sort by: Name</option>
+                <option value="price_asc" {% if selected_sort == 'price_asc' %}selected{% endif %}>Sort by: Price (Low to High)</option>
+                <option value="price_desc" {% if selected_sort == 'price_desc' %}selected{% endif %}>Sort by: Price (High to Low)</option>
+            </select>
+
+            <a href="{% url 'products:product_create' %}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors duration-200">
+                <i class="fas fa-plus mr-2"></i>Add Product
+            </a>
+        </div>
+    </form>
+</div>
+
+<div class="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
+    <table class="w-full">
+        <thead>
+            <tr class="bg-gray-100">
+                <th class="p-2 text-left">ID</th>
+                <th class="p-2 text-left">Name</th>
+                <th class="p-2 text-left">Category</th>
+                <th class="p-2 text-left">Price</th>
+                <th class="p-2 text-left">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+                <tr class="border-b">
+                    <td class="p-2">{{ product.id }}</td>
+                    <td class="p-2">{{ product.name }}</td>
+                    <td class="p-2">{{ product.category.name }}</td>
+                    <td class="p-2">${{ product.price }}</td>
+                    <td class="p-2">
+                        <a href="{% url 'products:product_detail' product.pk %}" class="text-blue-600 hover:text-blue-800 mr-2"><i class="fas fa-eye"></i></a>
+                        <a href="{% url 'products:product_update' product.pk %}" class="text-yellow-600 hover:text-yellow-800 mr-2"><i class="fas fa-edit"></i></a>
+                        <a href="{% url 'products:product_delete' product.pk %}" class="text-red-600 hover:text-red-800"><i class="fas fa-trash"></i></a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center p-4">No products found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

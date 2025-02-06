@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="flex-1 p-8 overflow-y-auto">
+        <header class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">Add/Edit Product</h2>
+        </header>
+
+        <div class="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
+            <form action="{% if product %}{% url 'products:product_update' product.pk %}{% else %}{% url 'products:product_create' %}{% endif %}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div>
+        <label for="id_name" class="block text-sm font-medium text-gray-700">Product Name</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    <div>
+        <label for="id_category" class="block text-sm font-medium text-gray-700">Category</label>
+        {{ form.category }}
+        {{ form.category.errors }}
+    </div>
+    <div>
+        <label for="id_price" class="block text-sm font-medium text-gray-700">Price</label>
+        {{ form.price }}
+        {{ form.price.errors }}
+    </div>
+    <div>
+        <label for="id_description" class="block text-sm font-medium text-gray-700">Description</label>
+        {{ form.description }}
+        {{ form.description.errors }}
+    </div>
+    <div>
+        <label for="id_image" class="block text-sm font-medium text-gray-700">Product Image</label>
+        {{ form.image }}
+        {{ form.image.errors }}
+    </div>
+    <div>
+        <label for="id_stock" class="block text-sm font-medium text-gray-700">Stock</label>
+        {{ form.stock }}
+        {{ form.stock.errors }}
+    </div>
+
+    <div class="flex justify-end space-x-4">
+        <a href="{% url 'products:product_list' %}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition-colors duration-200">Cancel</a>
+        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition-colors duration-200">
+            {% if product %} Update Product {% else %} Save Product {% endif %}
+        </button>
+    </div>
+</form>
+        </div>
+    </div>
+{% endblock %}

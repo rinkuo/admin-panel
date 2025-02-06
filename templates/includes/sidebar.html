@@ -1,0 +1,27 @@
+<aside class="w-64 bg-gray-800 text-white h-full fixed top-0 left-0 transform transition-transform duration-300 ease-in-out z-20" id="sidebar">
+    <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-100 mb-6">Admin Panel</h2>
+        <ul>
+            <li class="mb-4">
+                <a href="{% url 'orders:index' %}" class="text-gray-300 hover:text-white">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="mb-4">
+                <a href="{% url 'categories:category_list' %}" class="text-gray-300 hover:text-white">
+                    <i class="fas fa-list"></i> Categories
+                </a>
+            </li>
+            <li class="mb-4">
+                <a href="{% url 'products:product_list' %}" class="text-gray-300 hover:text-white">
+                    <i class="fas fa-box"></i> Products
+                </a>
+            </li>
+            <li class="mb-4">
+                <a href="{% url 'orders:order_list' %}" class="text-gray-300 hover:text-white">
+                    <i class="fas fa-clipboard-list"></i> Orders
+                </a>
+            </li>
+        </ul>
+    </div>
+</aside>

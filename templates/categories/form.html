@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Add/Edit Category - E-commerce Admin Panel{% endblock %}
+
+{% block content %}
+    <header class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">{{ form.instance.id|default:"Add" }} Category</h2>
+    </header>
+
+    <div class="bg-white p-6 rounded-lg shadow-md animate-fadeIn">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div>
+                <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">Category Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="text-red-500 text-sm">
+                        {% for error in form.name.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="text-red-500 text-sm">
+                        {% for error in form.description.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700">Category Image</label>
+                {{ form.image }}
+                {% if form.image.errors %}
+                    <div class="text-red-500 text-sm">
+                        {% for error in form.image.errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="flex justify-end space-x-4 mt-6">
+                <a href="{% url 'categories:category_list' %}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition-colors duration-200">Cancel</a>
+                <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition-colors duration-200">Save Category</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
